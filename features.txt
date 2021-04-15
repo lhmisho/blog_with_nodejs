@@ -1,0 +1,11 @@
+Key Features of our Project
+1) User can register and login
+2) User can create new project, update and delete from dashboard
+3) User can check their profile and able to check others profile
+4) Logged in user can like, dislike and comment and reply to comments 
+5) Logged in user can also bookmarks post 
+6) User can update their profile and change password
+
+
+Models:
+1) User 2) Profile 3) Post 4) Comment
