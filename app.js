@@ -3,9 +3,18 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 
-app.use(morgan('dev'))
-app.use(express.urlencoded({extended:true}))  // to accept form data
-app.use(express.json())  // to accept json data
+// setup view engine
+app.set('view engine', 'ejs')
+app.set('views', 'views')
+
+// middleware array
+const middleware = [
+    morgan('dev'),
+    express.static('public'),
+    express.urlencoded({extended:true}) , // to accept form data
+    express.json()  // to accept json data
+]
+app.use(middleware)
 
 
 
