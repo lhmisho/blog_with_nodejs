@@ -1,49 +1,37 @@
 <%- include('../../partials/header.ejs') %>
 
-    <div class="container my-container">
-        <div class="row centered-form">
-            <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Create A New Account</h3>
+<div class="container my-container my-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card card-body">
+                <h4 class="mb-3">Create A New Account</h4>
+                <form action="/auth/signup" method="POST">
+                    <div class="form-group">
+                        <label for="username">Enter Your User Name (Must Be Uniq)</label>
+                        <input type="text" name="username" id="username" class="form-control">
                     </div>
-                    <div class="panel-body p-3">
-                        <form role="form" method="POST" action="/auth/signup">
-                            
-                            <div class="form-group">
-                                <input type="text" name="username" id="username" class="form-control input-sm"
-                                    placeholder="Username">
-                            </div>
-                            <div class="form-group">
-                                <input type="email" name="email" id="email" class="form-control input-sm"
-                                    placeholder="Email Address">
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6">
-                                    <div class="form-group">
-                                        <input type="password" name="password" id="password"
-                                            class="form-control input-sm" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6">
-                                    <div class="form-group">
-                                        <input type="password" name="password_confirmation" id="password_confirmation"
-                                            class="form-control input-sm" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <input type="submit" value="Register" class="btn btn-info btn-block">
-
-                        </form>
+                    <div class="form-group">
+                        <label for="email">Enter Your Valid Email</label>
+                        <input type="email" name="email" id="email" class="form-control">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Enter A Strong Password</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Your Password</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Signup">
+                </form>
+                <a href="/auth/login" class="my-3 text-center"> Already have An Account? Login Herte </a>
             </div>
         </div>
     </div>
+</div>
 
-    <%- include('../../partials/footer.ejs') %>
-        </body>
+<%- include('../../partials/footer.ejs') %>
 
-        </html>
+</body>
+
+</html>
