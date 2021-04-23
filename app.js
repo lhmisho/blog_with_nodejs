@@ -17,11 +17,17 @@ const middleware = [
 ]
 app.use(middleware)
 
+// ------------------- Play Ground Routers --------------
+// TODO: should be remove
+const validatorRoutes = require('./palyground/validator')
+
 // setup view engine
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 app.use('/auth', authRoutes)
+app.use('/playground', validatorRoutes) // TODO: should be remove
+
 app.get('/', (req, res) => {
     res.render('pages/auth/signup.ejs', {'title': 'Create a new account'})
 })
