@@ -46,7 +46,17 @@ exports.loginGetController = (req, res, next) => {
 
 exports.loginPostController = async (req, res, next) => {
     let { email, password } = req.body
-
+    let errors = validationResult(req).formatWith(errorFormatter)
+    if (!errors.isEmpty()) {
+        // res.render("pages/auth/signup", {title: 'Create New Account', error: errors.mapped(), value: {...req.body}})
+        pageRenderer(
+            res = res,
+            path = "pages/auth/login.ejs",
+            title = 'Create New Account',
+            error = errors.mapped(),
+            value = { ...req.body }
+        )
+    }
     try {
         let user = await User.findOne({ email: email })
         if (!user) {
