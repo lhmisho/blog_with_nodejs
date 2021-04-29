@@ -3,9 +3,10 @@ const { validationResult } = require('express-validator')
 
 const User = require('../models/User')
 const errorFormatter = require('../utils/validationErrorFormatter')
+const pageRenderer = require('../utils/pageRenderer')
 
 exports.signupGetController = (req, res, next) => {
-    res.render("pages/auth/signup", {title: 'Create New Account'})
+    pageRenderer(res=res, path="pages/auth/signup", title='Create New Account')
 }
 
 exports.signupPostController = async (req, res, next) => {
@@ -13,7 +14,8 @@ exports.signupPostController = async (req, res, next) => {
 
     let errors = validationResult(req).formatWith(errorFormatter)
     if(!errors.isEmpty()){
-        return console.log(errors.mapped())
+        // return console.log(errors.mapped())
+        pageRenderer(res=res, path="pages/auth/signup", title='Create New Account', error=errors.mapped())
     }
 
     let { username, email, password, confirmPassword} = req.body
@@ -27,7 +29,7 @@ exports.signupPostController = async (req, res, next) => {
 
         let savedUser = await user.save()
         console.log(savedUser)
-        res.render("pages/auth/signup", {title: 'Create New Account'})
+        pageRenderer(res=res, path="pages/auth/signup", title='Create New Account')
     }catch(e){
         console.log(e)
         next(e)
@@ -35,7 +37,7 @@ exports.signupPostController = async (req, res, next) => {
 }
 
 exports.loginGetController = (req, res, next) => {
-    res.render('pages/auth/login.ejs', {title: 'Login to your account'})
+    pageRenderer(res=res, path='pages/auth/login.ejs', title='Login to your account')
 }
 
 exports.loginPostController = async (req, res, next) => {
@@ -52,7 +54,7 @@ exports.loginPostController = async (req, res, next) => {
             res.json({message: "Invalid Credentials"})
         }
         console.log('Logged in user', user)
-        res.render('pages/auth/login.ejs', {title: 'Login to your account'})
+        pageRenderer(res=res, path='pages/auth/login.ejs', title='Login to your account')
 
     }catch(e){
         console.log(e)
