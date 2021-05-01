@@ -41,7 +41,8 @@ exports.signupPostController = async (req, res, next) => {
 }
 
 exports.loginGetController = (req, res, next) => {
-    pageRenderer(res = res, path = 'pages/auth/login.ejs', title = 'Login to your account')
+    console.log(req.session.isLoggedIn)
+    return pageRenderer(res = res, path = 'pages/auth/login.ejs', title = 'Login to your account')
 }
 
 exports.loginPostController = async (req, res, next) => {
@@ -49,7 +50,7 @@ exports.loginPostController = async (req, res, next) => {
     let errors = validationResult(req).formatWith(errorFormatter)
     if (!errors.isEmpty()) {
         // res.render("pages/auth/signup", {title: 'Create New Account', error: errors.mapped(), value: {...req.body}})
-        pageRenderer(
+        return pageRenderer(
             res = res,
             path = "pages/auth/login.ejs",
             title = 'Create New Account',
@@ -67,8 +68,10 @@ exports.loginPostController = async (req, res, next) => {
         if (!match) {
             res.json({ message: "Invalid Credentials" })
         }
-        console.log('Logged in user', user)
-        pageRenderer(res = res, path = 'pages/auth/login.ejs', title = 'Login to your account')
+        req.session.isLoggedIn = true
+        req.session.user = user
+        console.log(user)
+        return pageRenderer(res = res, path = 'pages/auth/login.ejs', title = 'Login to your account')
 
     } catch (e) {
         console.log(e)
