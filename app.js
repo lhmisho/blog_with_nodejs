@@ -2,11 +2,18 @@
 const express = require('express')
 const morgan = require('morgan')
 const session = require('express-session')
+var MongoDBStore = require('connect-mongodb-session')(session)
 const authRoutes = require('./routes/authRouts')
 const mongoose = require('mongoose')
 const chalk = require('chalk')
 const app = express()
 
+const DB_URI = 'mongodb://localhost:27017/blog'
+var store = new MongoDBStore({
+    uri: DB_URI,
+    collection: 'sessions',
+    expires: 1000 * 60 * 60 * 2
+});
 // home roouter
 
 // middleware array
@@ -21,7 +28,8 @@ const middleware = [
         resave: false,
         cookie: {
             maxAge: 60 * 60 * 2 * 1000
-        }
+        },
+        store: store
     })
 ]
 app.use(middleware)
@@ -41,7 +49,7 @@ app.get('/', (req, res) => {
     res.render('pages/auth/signup.ejs', { 'title': 'Create a new account' })
 })
 
-const DB_URI = 'mongodb://localhost:27017/blog'
+
 const PORT = process.env.PORT || 8080
 mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
