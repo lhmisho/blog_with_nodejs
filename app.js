@@ -9,6 +9,8 @@ const chalk = require('chalk')
 const app = express()
 const bindUserWithRequest = require('./middleware/authMiddleware')
 const serLocals = require('./middleware/setLocalsMiddleware')
+const dashboardRoutes = require('./routes/dashboardRouts')
+
 
 const DB_URI = 'mongodb://localhost:27017/blog'
 var store = new MongoDBStore({
@@ -48,6 +50,7 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 app.use('/auth', authRoutes)
+app.use('/dashboard', dashboardRoutes)
 app.use('/playground', validatorRoutes) // TODO: should be remove
 
 app.get('/', (req, res) => {

@@ -1,8 +1,8 @@
 let User = require('../models/User')
 
 
-module.exports = async () => {
-    return (req, res, next) => {
+module.exports = () => {
+    return async (req, res, next) => {
         if(!req.session.isLoggedIn){
             return next()
         }
