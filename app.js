@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const chalk = require('chalk')
 const app = express()
 const bindUserWithRequest = require('./middleware/authMiddleware')
+const serLocals = require('./middleware/setLocalsMiddleware')
 
 const DB_URI = 'mongodb://localhost:27017/blog'
 var store = new MongoDBStore({
@@ -32,13 +33,15 @@ const middleware = [
         },
         store: store
     }),
-    bindUserWithRequest()
+    bindUserWithRequest(),
+    serLocals()
 ]
 app.use(middleware)
 
 // ------------------- Play Ground Routers --------------
 // TODO: should be remove
 const validatorRoutes = require('./palyground/validator')
+const setLocalsMiddleware = require('./middleware/setLocalsMiddleware')
 
 // setup view engine
 app.set('view engine', 'ejs')
