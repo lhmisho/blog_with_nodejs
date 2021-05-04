@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRouts')
 const mongoose = require('mongoose')
 const chalk = require('chalk')
 const app = express()
+const bindUserWithRequest = require('./middleware/authMiddleware')
 
 const DB_URI = 'mongodb://localhost:27017/blog'
 var store = new MongoDBStore({
@@ -30,7 +31,8 @@ const middleware = [
             maxAge: 60 * 60 * 2 * 1000
         },
         store: store
-    })
+    }),
+    bindUserWithRequest()
 ]
 app.use(middleware)
 
