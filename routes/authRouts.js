@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const signupValidator = require('../validator/auth/signupValidation')
 const loginValidator = require('../validator/auth/loginValidation')
+const isUnAuthenticated = require('../middleware/isUnAuthenticatedMiddleware')
 
 const { 
     signupGetController, 
@@ -13,9 +14,9 @@ const {
 const loginValidation = require('../validator/auth/loginValidation')
 
 // auth routers
-router.get('/signup', signupGetController)
+router.get('/signup', isUnAuthenticated, signupGetController)
 router.post('/signup', signupValidator, signupPostController)
-router.get('/login', loginGetController)
+router.get('/login', isUnAuthenticated, loginGetController)
 router.post('/login', loginValidation, loginPostController)
 router.get('/logout', logoutController)
 
