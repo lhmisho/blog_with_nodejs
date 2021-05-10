@@ -1,8 +1,9 @@
 const router = require('express').Router()
 const { check, validationResult } = require('express-validator')
+const flash = require('../utils/Flash')
 
 router.get('/validator', (req, res, next) => {
-    console.log('validator got called')
+    console.log(flash.getMessage(req))
     res.render('playground/signup.ejs', { title: 'Signup Playground' })
 })
 
@@ -36,13 +37,12 @@ router.post('/validator',
         let errors = validationResult(req)
 
         const formatter = (error) => error.msg
-
-        console.log(errors)
-        console.log(errors.formatWith(formatter).mapped())
-
-        console.log(req.body)
-
-        res.render('playground/signup.ejs', { title: 'Signup Playground' })
+        if(!errors.isEmpty()){
+            req.flash('fail', 'Some error occured')
+        }else{
+            req.flash('success', 'No error occured')
+        }
+        res.redirect('/playground/validator')
     })
 
 

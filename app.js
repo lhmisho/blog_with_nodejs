@@ -2,14 +2,21 @@
 const express = require('express')
 const morgan = require('morgan')
 const session = require('express-session')
-var MongoDBStore = require('connect-mongodb-session')(session)
-const authRoutes = require('./routes/authRouts')
 const mongoose = require('mongoose')
+const MongoDBStore = require('connect-mongodb-session')(session)
 const chalk = require('chalk')
+const flash = require('connect-flash');
+
+// routes
+const authRoutes = require('./routes/authRouts')
+const dashboardRoutes = require('./routes/dashboardRouts')
+
 const app = express()
+
+// middlewares
 const bindUserWithRequest = require('./middleware/authMiddleware')
 const serLocals = require('./middleware/setLocalsMiddleware')
-const dashboardRoutes = require('./routes/dashboardRouts')
+
 
 
 const DB_URI = 'mongodb://localhost:27017/blog'
@@ -36,7 +43,8 @@ const middleware = [
         store: store
     }),
     bindUserWithRequest(),
-    serLocals()
+    serLocals(),
+    flash()
 ]
 app.use(middleware)
 
