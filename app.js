@@ -28,8 +28,9 @@ var store = new MongoDBStore({
 // home roouter
 
 // middleware array
+app.get('env').toLowerCase() == 'development' && app.use(morgan('dev'))
+console.log(app.get('env'))
 const middleware = [
-    morgan('dev'),
     express.static('public'),
     express.urlencoded({ extended: true }),
     express.json(),
@@ -46,6 +47,9 @@ const middleware = [
     serLocals(),
     flash()
 ]
+
+console.log(process.env.NODE_ENV)
+
 app.use(middleware)
 
 // ------------------- Play Ground Routers --------------
