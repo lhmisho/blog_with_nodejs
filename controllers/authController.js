@@ -10,12 +10,14 @@ exports.signupGetController = (req, res, next) => {
 }
 
 exports.signupPostController = async (req, res, next) => {
-    console.log(req.body)
     let { username, email, password, confirmPassword } = req.body
     let errors = validationResult(req).formatWith(errorFormatter)
+
+    req.flash('fail', 'Please check your form')
     if (!errors.isEmpty()) {
         // res.render("pages/auth/signup", {title: 'Create New Account', error: errors.mapped(), value: {...req.body}})
         pageRenderer(
+            req=req,
             res = res,
             path = "pages/auth/signup",
             title = 'Create New Account',
@@ -31,9 +33,8 @@ exports.signupPostController = async (req, res, next) => {
             username, email, password: hashedPassword
         })
 
-        let savedUser = await user.save()
-        console.log(savedUser)
-        pageRenderer(res = res, path = "pages/auth/signup", title = 'Create New Account')
+        await user.save()
+        redirect('/auth/login')
     } catch (e) {
         console.log(e)
         next(e)
@@ -41,16 +42,17 @@ exports.signupPostController = async (req, res, next) => {
 }
 
 exports.loginGetController = (req, res, next) => {
-    console.log(req.session.isLoggedIn)
-    return pageRenderer(res = res, path = 'pages/auth/login.ejs', title = 'Login to your account')
+    return pageRenderer(req = req, res = res, path = 'pages/auth/login.ejs', title = 'Login to your account')
 }
 
 exports.loginPostController = async (req, res, next) => {
     let { email, password } = req.body
     let errors = validationResult(req).formatWith(errorFormatter)
     if (!errors.isEmpty()) {
+        req.flash('fail', 'Please check your form')
         // res.render("pages/auth/signup", {title: 'Create New Account', error: errors.mapped(), value: {...req.body}})
         return pageRenderer(
+            req = req,
             res = res,
             path = "pages/auth/login.ejs",
             title = 'Create New Account',
@@ -61,12 +63,28 @@ exports.loginPostController = async (req, res, next) => {
     try {
         let user = await User.findOne({ email: email })
         if (!user) {
-            res.json({ message: "Invalid Credentials" })
+            req.flash('fail', 'Invalid Credentials')
+            return pageRenderer(
+                req = req,
+                res = res,
+                path = "pages/auth/login.ejs",
+                title = 'Login to your Account',
+                error = {},
+                value = { ...req.body }
+            )
         }
 
         let match = bcrypt.compare(password, user.password)
         if (!match) {
-            res.json({ message: "Invalid Credentials" })
+            req.flash('fail', 'Invalid Credentials')
+            return pageRenderer(
+                req = req,
+                res = res,
+                path = "pages/auth/login.ejs",
+                title = 'Login to your Account',
+                error = {},
+                value = { ...req.body }
+            )
         }
         req.session.isLoggedIn = true
         req.session.user = user
@@ -75,6 +93,7 @@ exports.loginPostController = async (req, res, next) => {
                 console.log(err)
                 return next()
             }
+            req.flash('success', 'Successfully Logedin')
             res.redirect('/dashboard')
         })
 
@@ -90,6 +109,7 @@ exports.logoutController = (req, res, next) => {
             console.log(err)
             return next()
         }
+        req.flash('success', 'Successfully logged out')
         res.redirect('/auth/login')
     })
 }
