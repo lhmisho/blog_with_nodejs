@@ -1,4 +1,9 @@
 {
     "name": "LH Misho default",
-    "email": "lhmisho@gmail.com"
+    "email": "lhmisho@gmail.com",
+    "DB_HOST": "localhost",
+    "DB_USER": "mongodb",
+    "DB_PASS": "s1mpl3",
+    "DB_NAME": "blog",
+    "SECRET_KEY": "SECRET_KEY"
 }

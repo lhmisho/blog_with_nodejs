@@ -21,7 +21,8 @@ const serLocals = require('./middleware/setLocalsMiddleware')
 
 
 
-const DB_URI = `${process.env.DB_USER}://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`
+// const DB_URI = `${process.env.DB_USER}://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`
+const DB_URI = `${config.get('DB_USER')}://${config.get('DB_HOST')}:27017/${config.get('DB_NAME')}`
 var store = new MongoDBStore({
     uri: DB_URI,
     collection: 'sessions',
@@ -37,7 +38,7 @@ const middleware = [
     express.urlencoded({ extended: true }),
     express.json(),
     session({
-        secret: process.env.SECRET_KEY || 'SECRATE_KEY',
+        secret: config.get('SECRET_KEY') || 'SECRATE_KEY',
         saveUninitialized: false,
         resave: false,
         cookie: {
