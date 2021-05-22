@@ -1,4 +1,5 @@
 
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const session = require('express-session')
@@ -19,7 +20,7 @@ const serLocals = require('./middleware/setLocalsMiddleware')
 
 
 
-const DB_URI = 'mongodb://localhost:27017/blog'
+const DB_URI = `${process.env.DB_USER}://${process.env.DB_HOST}:27017/${process.env.DB_NAME}`
 var store = new MongoDBStore({
     uri: DB_URI,
     collection: 'sessions',
