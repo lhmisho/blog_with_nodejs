@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const chalk = require('chalk')
 const flash = require('connect-flash');
+const config = require('config');
 
 // routes
 const authRoutes = require('./routes/authRouts')
@@ -50,7 +51,7 @@ const middleware = [
 ]
 
 console.log(process.env.NODE_ENV)
-
+console.log(config.get('name'))
 app.use(middleware)
 
 // ------------------- Play Ground Routers --------------
