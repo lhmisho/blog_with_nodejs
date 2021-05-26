@@ -6,7 +6,7 @@ const errorFormatter = require('../utils/validationErrorFormatter')
 const pageRenderer = require('../utils/pageRenderer')
 
 exports.signupGetController = (req, res, next) => {
-    pageRenderer(res = res, path = "pages/auth/signup", title = 'Create New Account', value = {})
+    pageRenderer(req = req, res = res, path = "pages/auth/signup", title = 'Create New Account', value = {})
 }
 
 exports.signupPostController = async (req, res, next) => {
