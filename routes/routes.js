@@ -29,4 +29,3 @@ module.exports = app => {
         app.use(router.path, router.handler)
     })
 }
-    
